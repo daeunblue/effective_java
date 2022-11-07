@@ -1,13 +1,13 @@
 > clone 재정의는 주의해서 진행하라
 
-## [Clonable의 역할](https://jake-seo-dev.tistory.com/31#Clonable%EC%-D%--%--%EC%--%AD%ED%--%A-)
+## Clonable의 역할
 
 -   복제해도 되는 클래스임을 나타내는 [믹스인 인터페이스](https://jake-seo-dev.tistory.com/30)이다.
 -   Object 클래스에 protected clone()이라는 메서드가 있다.
 -   Cloneable 인터페이스는 clone() 메서드의 동작방식을 결정한다.
 -   Cloneable을 구현하지 않은 인스턴스에서 clone()을 호출하면 CloneNotSupportedException을 던진다.
 
-### [clone() 사용해보기](https://jake-seo-dev.tistory.com/31#clone--%--%EC%--%AC%EC%-A%A-%ED%--%B-%EB%B-%B-%EA%B-%B-)
+### clone() 사용해보기
 
 ```
 static class Entry {
@@ -38,8 +38,7 @@ java.lang.CloneNotSupportedException: item13.Item13Test$Entry
 
 -   에러가 뜨는 이유는 뭘까? 클래스에서 Cloneable 인터페이스를 상속받지 않았기 때문이다.
 
-### [clone() 동작하게 만들기](https://jake-seo-dev.tistory.com/31#clone--%--%EB%-F%--%EC%-E%--%ED%--%--%EA%B-%-C%--%EB%A-%-C%EB%--%A-%EA%B-%B-)
-
+### clone() 동작하게 만들기
 ```
 public class Item13Test {
     static class Entry implements Cloneable {
@@ -73,16 +72,16 @@ public class Item13Test {
 -   Cloneable을 상속받았다.
 -   clone() 메서드의 내용은 그냥 상위 클래스의 clone()을 가져다 써도 된다.
 
-## [Cloneable의 문제점](https://jake-seo-dev.tistory.com/31#Cloneable%EC%-D%--%--%EB%AC%B-%EC%A-%-C%EC%A-%--)
+## Cloneable의 문제점
 
 -   일반적인 인터페이스의 동작방식과 다르게 상위 Object 클래스에 protected 접근자로 된 clone() 메서드가 존재하고, 그걸 오버라이드 해야 한다. (믹스인으로 의도해서 만들었는데, 믹스인이라고 말하기 뭔가 애매하다.)
 -   Cloneable만 사용하면 당연히 복제가 이뤄질 줄 알았는데 생각보다 복잡한 구조를 이해하고 있어야 한다.
 -   자바의 기본 의도와 다르게 생성자를 호출하지 않고 객체를 생성할 수 있게 되어버린다.
 -   clone() 메서드의 일반 규약은 약간 허술하다.
 
-## [clone() 메서드 구현 방법](https://jake-seo-dev.tistory.com/31#clone--%--%EB%A-%--%EC%--%-C%EB%--%-C%--%EA%B-%AC%ED%--%--%--%EB%B-%A-%EB%B-%--)
+## clone() 메서드 구현 방법
 
-### [clone() 메서드의 일반 규약](https://jake-seo-dev.tistory.com/31#clone--%--%EB%A-%--%EC%--%-C%EB%--%-C%EC%-D%--%--%EC%-D%BC%EB%B-%--%--%EA%B-%-C%EC%--%BD)
+### clone() 메서드의 일반 규약
 
 -   x.clone() != x 식은 참이어야 한다.
     -   복사된 객체가 원본이랑 같은 주소를 가지면 안된다는 뜻이다.
@@ -91,12 +90,12 @@ public class Item13Test {
 -   x.clone().equals()는 참이어야 하지만, 필수는 아니다.
     -   복사된 객체가 논리적 동치는 일치해야 한다는 뜻이다. (필수는 아니다.)
 
-### [clone() 메서드는 super.clone()을 사용하는 편이 좋다.](https://jake-seo-dev.tistory.com/31#clone--%--%EB%A-%--%EC%--%-C%EB%--%-C%EB%-A%--%--super-clone--%EC%-D%--%--%EC%--%AC%EC%-A%A-%ED%--%--%EB%-A%--%--%ED%-E%B-%EC%-D%B-%--%EC%A-%-B%EB%-B%A--)
+### clone() 메서드는 super.clone()을 사용하는 편이 좋다.
 
 -   super.clone()을 사용하지 않으면, 상속한 하위 클래스에서 super.clone()을 호출했을 때 엉뚱한 결과가 나올 수 있다.
     -   단, final 클래스라면, 이런 걱정을 할 필요 없다.
 
-### [구현 순서](https://jake-seo-dev.tistory.com/31#%EA%B-%AC%ED%--%--%--%EC%--%-C%EC%--%-C)
+### 구현 순서
 
 -   super.clone()을 호출한다.
     -   정의된 모든 필드는 원본 필드와 똑같은 값을 갖게 된다.
@@ -120,7 +119,7 @@ public PhoneNumber clone() {
         -   이 거추장스러운 코드는 사실 CloneNotSupportedException이 unchecked 예외여야 했다는 것을 알려준다.
             -   과도한 검사 예외는 API를 사용하기 불편하게 만든다.
 
-## [가변객체를 참조할 때의 clone() 메서드 구현](https://jake-seo-dev.tistory.com/31#%EA%B-%--%EB%B-%--%EA%B-%-D%EC%B-%B-%EB%A-%BC%--%EC%B-%B-%EC%A-%B-%ED%--%A-%--%EB%--%-C%EC%-D%--%--clone--%--%EB%A-%--%EC%--%-C%EB%--%-C%--%EA%B-%AC%ED%--%--)
+## 가변객체를 참조할 때의 clone() 메서드 구현
 
 ```
 static class Stack {
@@ -205,8 +204,7 @@ stack2 = Stack{elements=[value1, value2, value3, null, null, null, null, null, n
 -   한편 elements가 final로 선언되어 있었다면, 앞의 방식은 작동하지 않는다.
     -   **가변 객체를 참조하는 필드는 final로 선언하라**는 일반 용법과 충돌한다.
 
-## [가변객체 내부에 가변객체가 있을 때의 clone() 메서드](https://jake-seo-dev.tistory.com/31#%EA%B-%--%EB%B-%--%EA%B-%-D%EC%B-%B-%--%EB%--%B-%EB%B-%--%EC%--%--%--%EA%B-%--%EB%B-%--%EA%B-%-D%EC%B-%B-%EA%B-%--%--%EC%-E%--%EC%-D%--%--%EB%--%-C%EC%-D%--%--clone--%--%EB%A-%--%EC%--%-C%EB%--%-C)
-
+## 가변객체 내부에 가변객체가 있을 때의 clone() 메서드
 ```
 static class HashTable implements Cloneable {
     private Entry[] buckets;
@@ -235,7 +233,7 @@ static class HashTable implements Cloneable {
 -   위 HashTable 클래스의 clone() 메서드는 적절하게 구현되었을까?
     -   아니다. clone() 메서드를 사용하면, 복제된 HashTable은 자신만의 buckets는 가지겠지만, buckets 내부에 있는 객체들은 여전히 복제되기 이전의 객체들을 가리키고 있을 것이다.
 
-### [가변 객체 내부에 또 다른 가변 객체가 있을 때 clone() 메서드](https://jake-seo-dev.tistory.com/31#%EA%B-%--%EB%B-%--%--%EA%B-%-D%EC%B-%B-%--%EB%--%B-%EB%B-%--%EC%--%--%--%EB%--%--%--%EB%-B%A-%EB%A-%B-%--%EA%B-%--%EB%B-%--%--%EA%B-%-D%EC%B-%B-%EA%B-%--%--%EC%-E%--%EC%-D%--%--%EB%--%-C%--clone--%--%EB%A-%--%EC%--%-C%EB%--%-C)
+### 가변 객체 내부에 또 다른 가변 객체가 있을 때 clone() 메서드
 
 ```
 static class HashTable implements Cloneable {
@@ -286,14 +284,14 @@ static class HashTable implements Cloneable {
 > 만일, 생성자에서 HashTable을 받고 put() 메서드로 복사한다면, put은 final이거나 private이어야 한다.  
 > 생성자에는 재정의될 수 있는 메서드를 호출하면 안되기 때문이다.
 
-## [clone() 메서드 주의사항](https://jake-seo-dev.tistory.com/31#clone--%--%EB%A-%--%EC%--%-C%EB%--%-C%--%EC%A-%BC%EC%-D%--%EC%--%AC%ED%--%AD)
+## clone() 메서드 주의사항
 
 -   Object.clone()은 동기화를 신경쓰지 않은 메서드이다.
     -   동시성 문제가 발생할 수 있다.
 -   만일 clone()을 막고 싶다면 clone() 메서드를 재정의하여, CloneNotSupportedException()을 던지도록 하자.
 -   기본 타입이나 불변 객체 참조만 가지면 아무것도 수정할 필요 없으나 일련번호 혹은 고유 ID와 같은 값을 가지고 있다면, 비록 불변일지라도 새롭게 수정해주어야 할 것이다.
 
-## [복사 생성자와 복사 팩터리로 clone() 구현하기](https://jake-seo-dev.tistory.com/31#%EB%B-%B-%EC%--%AC%--%EC%--%-D%EC%--%B-%EC%-E%--%EC%--%--%--%EB%B-%B-%EC%--%AC%--%ED%-C%A-%ED%--%B-%EB%A-%AC%EB%A-%-C%--clone--%--%EA%B-%AC%ED%--%--%ED%--%--%EA%B-%B-)
+## 복사 생성자와 복사 팩터리로 clone() 구현하기
 
 > 복사 생성자란 단순히 자신과 같은 클래스의 인스턴스를 인수로 받는 생성자를 말한다.
 
@@ -323,7 +321,7 @@ public HashMap(Map<? extends K, ? extends V> m) {
 
 > 더 정확한 이름은 변환 생성자(conversion constructor)와 변환 팩터리(conversion factory)이다.
 
-## [정리](https://jake-seo-dev.tistory.com/31#%EC%A-%--%EB%A-%AC)
+## 정리
 
 -   인터페이스를 만들 때는 절대 Cloneable을 확장해선 안된다.
     -   Cloneable은 클래스의 믹스인(사용) 의도로 만들어진 것이다.
